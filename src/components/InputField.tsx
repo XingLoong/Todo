@@ -1,62 +1,53 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Stack from '@mui/material/Stack'
-import TextField from '@mui/material/TextField'
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import { FormControl, Grid, TextField, Button } from "@mui/material";
 
-const InputField = ({addTodo}:{addTodo:AddTodo}) => {
-  const [newTodo, setNewTodo] = useState<string>("")
+interface InputFieldProps {
+  addTodo: (text: string) => void;
+}
+
+const InputField = ({ addTodo }: InputFieldProps) => {
+  const [newTodo, setNewTodo] = useState<string>("");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNewTodo(event.target.value);
-  }
+  };
 
-  const handleSubmit = (event: FormEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    if (newTodo.trim().length === 0) {
-      return
+  const handleAdd = () => {
+    if (newTodo.length > 0) {
+      addTodo(newTodo);
+      setNewTodo("");
     }
-    addTodo(newTodo);
-    setNewTodo("");
-  }
+  };
 
   return (
-    <div onSubmit={handleSubmit}>
-    <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-      
-    >
-      <div>
-        <Stack direction="row" spacing={0} justifyContent="center">
-          <TextField 
-            id="outlined-search" 
-            label="Add your todo" 
-            type="text" 
+    <div>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={9}>
+          <TextField
+            id="outlined-search"
+            label="Add your todo"
+            type="text"
             value={newTodo}
             onChange={handleChange}
-            /> 
-          <Button 
-            variant="contained" 
-            size="medium" 
-            type="submit"       
-                 
+            fullWidth
+            size="small"
+            style={{ height: "30px" }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <Button
+            variant="contained"
+            fullWidth
+            size="large"
+            type="submit"
+            onClick={handleAdd}
           >
             Add
-          </Button>              
-        </Stack>
-      </div>
-
-    </Box>
-    
-      
-    
+          </Button>
+        </Grid>
+      </Grid>
     </div>
-  )
-}
+  );
+};
 
-export default InputField
+export default InputField;
